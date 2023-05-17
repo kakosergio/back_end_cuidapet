@@ -1,49 +1,45 @@
-A server app built using [Shelf](https://pub.dev/packages/shelf),
-configured to enable running with [Docker](https://www.docker.com/).
+# Cuidapet Back-end
+ 
+## ✨ About
 
-This sample code handles HTTP GET requests to `/` and `/echo/<message>`
+Cuidapet is a petshop hub app, in Portuguese, where the user can buy pet stuff and order it from the market. This project is in progress. While I'm already familiar with Golang and built an entire API with it, I wished to try Dart on back-end for study and tests purposes. It uses Get_it and Injectable as DI, Logger as server logs, mySql under Docker as database, Shelf and Shel_router for web serving and routes, respectively.
 
-# Running the sample
+## ⚡ Demo
+Under construction
 
-## Running with the Dart SDK
 
-You can run the example with the [Dart SDK](https://dart.dev/get-dart)
-like this:
+## Features
+- [x] Under construction
 
+## Main technologies
+- Dart
+- mySQL
+- Docker
+- Get_it
+- Injectable
+- Looger
+- Shelf
+- Shelf_router
+
+## Learning Process
+Under construction
+
+## 🚀 How to Use
+
+- Clone this project
+```sh
+git clone https://github.com/kakosergio/back_end_cuidapet
 ```
-$ dart run bin/server.dart
-Server listening on port 8080
-```
-
-And then from a second terminal:
-```
-$ curl http://0.0.0.0:8080
-Hello, World!
-$ curl http://0.0.0.0:8080/echo/I_love_Dart
-I_love_Dart
-```
-
-## Running with Docker
-
-If you have [Docker Desktop](https://www.docker.com/get-started) installed, you
-can build and run with the `docker` command:
-
-```
-$ docker build . -t myserver
-$ docker run -it -p 8080:8080 myserver
-Server listening on port 8080
-```
-
-And then from a second terminal:
-```
-$ curl http://0.0.0.0:8080
-Hello, World!
-$ curl http://0.0.0.0:8080/echo/I_love_Dart
-I_love_Dart
+- Open your project, and then get the packages
+```sh
+dart pub get
 ```
 
-You should see the logging printed in the first terminal:
+- Inside the project, run it by typing
+```sh
+dart run main.dart
 ```
-2021-05-06T15:47:04.620417  0:00:00.000158 GET     [200] /
-2021-05-06T15:47:08.392928  0:00:00.001216 GET     [200] /echo/I_love_Dart
-```
+or by creating a JSON launcher on Run and Debug tab in VS Code.
+
+   >This project was developed by **[@Sergio R. Teixeira](https://www.linkedin.com/in/kakosergio/)**, following the classes of Cuidapet Back-end at [@Academia do Flutter](https://instituto.academiadoflutter.com.br/).
+   ---

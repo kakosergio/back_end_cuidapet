@@ -6,13 +6,6 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-// Configure routes.
-final _router = Router()..get('/home', _rootHandler);
-
-Response _rootHandler(Request req) {
-  return Response.ok('Hello Sérgio Ricardo!\n');
-}
-
 void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;

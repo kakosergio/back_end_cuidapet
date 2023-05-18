@@ -19,4 +19,5 @@ class LoggerImpl implements Logger {
   @override
   void warning(message, [error, StackTrace? stackTrace]) =>
       _logger.w(message, error, stackTrace);
+      
 }

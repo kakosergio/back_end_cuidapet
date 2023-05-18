@@ -8,24 +8,29 @@ import 'package:get_it/get_it.dart';
 // AppConfig instancia todas as configurações de banco de dados do aplicativo
 class AppConfig {
   Future<void> loadAppConfig() async {
-    await _loadEnv();
+    // Como feito na aula, mas não serviu para a versão atual do Dotenv e Dart
+    // _loadEnv();
     _loadDatabaseConfig();
     _configLogger();
     _loadDependencies();
   }
 
-  Future<void> _loadEnv() async => DotEnv().load;
+  // Como feito na aula, mas não serviu para a versão atual do Dotenv e Dart
+  // Talvez com o flutter_dotenv resolvesse
+  // Future<void> _loadEnv() async => DotEnv()..load();
 
   void _loadDatabaseConfig() {
+    // Seguindo a documentação, o carregamento do DotEnv foi realizado
+    // Detalhe: a função load do DotEnv não retorna um Future, então o carregamento
+    // pôde ser feito de forma síncrona.
+    var env = DotEnv()..load();
     final databaseConfig = DatabaseConnectionConfiguration(
-      host: DotEnv()['DATABASE_HOST'] ?? DotEnv()['databaseHost']!,
-      user: DotEnv()['DATABASE_USER'] ?? DotEnv()['databaseUser']!,
-      port: int.tryParse(
-              DotEnv()['DATABASE_PORT'] ?? DotEnv()['databasePort']!) ??
+      host: env['DATABASE_HOST'] ?? env['dbHost']!,
+      user: env['DATABASE_USER'] ?? env['dbUser']!,
+      port: int.tryParse(env['DATABASE_PORT'] ?? env['dbPort']!) ??
           3306,
-      password:
-          DotEnv()['DATABASE_PASSWORD'] ?? DotEnv()['databasePassword'] ?? '',
-      databaseName: DotEnv()['DATABASE_NAME'] ?? DotEnv()['databaseName'] ?? '',
+      password: env['DATABASE_PASSWORD'] ?? env['dbPassword'] ?? '',
+      databaseName: env['DATABASE_NAME'] ?? env['dbName'] ?? '',
     );
 
     // Registra a configuração do banco de dados no GetIt para injeção de dependência

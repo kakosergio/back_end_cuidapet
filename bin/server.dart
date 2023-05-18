@@ -1,22 +1,16 @@
 import 'dart:io';
 
 import 'package:back_end_cuidapet/app/config/app_config.dart';
+import 'package:back_end_cuidapet/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 // Configure routes.
-final _router = Router()
-  ..get('/', _rootHandler)
-  ..get('/echo/<message>', _echoHandler);
+final _router = Router()..get('/home', _rootHandler);
 
 Response _rootHandler(Request req) {
-  return Response.ok('Hello, World!\n');
-}
-
-Response _echoHandler(Request request) {
-  final message = request.params['message'];
-  return Response.ok('$message\n');
+  return Response.ok('Hello Sérgio Ricardo!\n');
 }
 
 void main(List<String> args) async {
@@ -26,9 +20,12 @@ void main(List<String> args) async {
   // Calling AppConfig
   final appConfig = AppConfig();
   appConfig.loadAppConfig();
+  final router = Router();
+
+  router.mount('/helloController/', Controller().router);
 
   // Configure a pipeline that logs requests.
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(_router);
+  final handler = Pipeline().addMiddleware(logRequests()).addHandler(router);
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');

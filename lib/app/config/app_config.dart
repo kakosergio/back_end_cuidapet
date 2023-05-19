@@ -19,15 +19,16 @@ class AppConfig {
 
   void _loadDatabaseConfig() {
     // Com o novo singleton registrado na classe Environments, recuperei a instancia pelo GetIt
-    // e passei a nova função param direto no databaseConfig.
-    // Agora vamos executar e ver no que dá
+    // e passei a nova função param direto no databaseConfig. Com o override do operator []
+    // indicando a função params como mediadora, basta passar nos colchetes os parametros
+    // que ele trará as informações do dotenv corretamente.
     var env = GetIt.I.get<Environments>();
     final databaseConfig = DatabaseConnectionConfiguration(
-      host: env.param('DATABASE_HOST') ?? env.param('dbHost')!,
-      user: env.param('DATABASE_USER') ?? env.param('dbUser')!,
-      port: int.tryParse(env.param('DATABASE_PORT') ?? env.param('dbPort')!) ?? 3306,
-      password: env.param('DATABASE_PASSWORD') ?? env.param('dbPassword') ?? '',
-      databaseName: env.param('DATABASE_NAME') ?? env.param('dbName') ?? '',
+      host: env['DATABASE_HOST'] ?? env['dbHost']!,
+      user: env['DATABASE_USER'] ?? env['dbUser']!,
+      port: int.tryParse(env['DATABASE_PORT'] ?? env['dbPort']!) ?? 3306,
+      password: env['DATABASE_PASSWORD'] ?? env['dbPassword'] ?? '',
+      databaseName: env['DATABASE_NAME'] ?? env['dbName'] ?? '',
     );
 
     // Registra a configuração do banco de dados no GetIt para injeção de dependência

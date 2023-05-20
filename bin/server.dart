@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:back_end_cuidapet/app/config/app_config.dart';
-import 'package:back_end_cuidapet/controller.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -14,8 +13,6 @@ void main(List<String> args) async {
   final appConfig = AppConfig();
   appConfig.loadAppConfig();
   final router = Router();
-
-  router.mount('/helloController/', Controller().router);
 
   // Configure a pipeline that logs requests.
   final handler = Pipeline().addMiddleware(logRequests()).addHandler(router);

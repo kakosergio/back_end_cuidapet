@@ -18,9 +18,9 @@ void main(List<String> args) async {
 
   // Configure a pipeline that logs requests.
   final handler = Pipeline()
-      .addMiddleware(CorsMiddleware().handler)
+      .addMiddleware(CorsMiddleware())
       .addMiddleware(logRequests())
-      .addMiddleware(DefaultContentType().handler)
+      .addMiddleware(DefaultContentType())
       .addHandler(router);
 
   // For running in containers, we respect the PORT environment variable.

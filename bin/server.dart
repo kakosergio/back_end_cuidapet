@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:back_end_cuidapet/app/config/app_config.dart';
+import 'package:back_end_cuidapet/app/middlewares/cors/cors_middleware.dart';
+import 'package:back_end_cuidapet/app/middlewares/default_content_type/default_content_type.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -15,7 +17,11 @@ void main(List<String> args) async {
   final router = Router();
 
   // Configure a pipeline that logs requests.
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(router);
+  final handler = Pipeline()
+      .addMiddleware(CorsMiddleware().handler)
+      .addMiddleware(logRequests())
+      .addMiddleware(DefaultContentType().handler)
+      .addHandler(router);
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');

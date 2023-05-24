@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
 import 'package:shelf/shelf.dart';
 
 import 'package:back_end_cuidapet/app/logger/logger.dart';
@@ -34,7 +35,7 @@ class SecurityMiddleware extends Middlewares {
     }
 
     final authorizationToken = authHeaderContent[1];
-
+    
     
   }
 }

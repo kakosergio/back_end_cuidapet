@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:back_end_cuidapet/app/config/app_config.dart';
 import 'package:back_end_cuidapet/app/middlewares/cors/cors_middleware.dart';
 import 'package:back_end_cuidapet/app/middlewares/default_content_type/default_content_type.dart';
+import 'package:back_end_cuidapet/app/middlewares/security/security_middleware.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -13,14 +15,16 @@ void main(List<String> args) async {
 
   // Calling AppConfig
   final appConfig = AppConfig();
-  appConfig.loadAppConfig();
+  await appConfig.loadAppConfig();
   final router = Router();
+  final getIt = GetIt.I;
 
   // Configure a pipeline that logs requests.
   final handler = Pipeline()
       .addMiddleware(CorsMiddleware())
-      .addMiddleware(logRequests())
       .addMiddleware(DefaultContentType())
+      .addMiddleware(SecurityMiddleware(log: getIt.get()))
+      .addMiddleware(logRequests())
       .addHandler(router);
 
   // For running in containers, we respect the PORT environment variable.

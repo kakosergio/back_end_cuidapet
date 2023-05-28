@@ -7,11 +7,11 @@ import 'package:back_end_cuidapet/entities/user.dart';
 
 @LazySingleton(as: UserService)
 class UserServiceImpl implements UserService {
-  final UserRepository userRepository;
+  final UserRepository _userRepository;
 
   UserServiceImpl({
-    required this.userRepository,
-  });
+    required userRepository,
+  }) : _userRepository = userRepository;
 
   @override
   Future<User> createUser(UserSaveInputModel user) {
@@ -21,6 +21,6 @@ class UserServiceImpl implements UserService {
         registerType: 'App',
         supplierId: user.supplierId);
 
-    return userRepository.create(userEntity);
+    return _userRepository.create(userEntity);
   }
 }

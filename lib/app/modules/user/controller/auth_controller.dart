@@ -1,18 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:injectable/injectable.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+
+import 'package:back_end_cuidapet/app/modules/user/service/user_service.dart';
 
 part 'auth_controller.g.dart';
 
 @Injectable()
 class AuthController {
+  final UserService _userService;
 
-   @Route.get('/')
-   Future<Response> find(Request request) async { 
-      return Response.ok(jsonEncode(''));
-   }
+  AuthController({
+    required userService,
+  }) : _userService = userService;
 
-   Router get router => _$AuthControllerRouter(this);
+  @Route.get('/')
+  Future<Response> find(Request request) async {
+    return Response.ok(jsonEncode(''));
+  }
+
+  Router get router => _$AuthControllerRouter(this);
 }

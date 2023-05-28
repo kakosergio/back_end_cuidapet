@@ -18,6 +18,8 @@ import '../logger/logger.dart' as _i9;
 import '../modules/user/controller/auth_controller.dart' as _i3;
 import '../modules/user/data/user_repository.dart' as _i7;
 import '../modules/user/data/user_repository_impl.dart' as _i8;
+import '../modules/user/service/user_service.dart' as _i10;
+import '../modules/user/service/user_service_impl.dart' as _i11;
 import 'database_connection_configuration.dart' as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -38,6 +40,8 @@ extension GetItInjectableX on _i1.GetIt {
           connection: gh<_i4.DatabaseConnection>(),
           log: gh<_i9.Logger>(),
         ));
+    gh.lazySingleton<_i10.UserService>(
+        () => _i11.UserServiceImpl(userRepository: gh<_i7.UserRepository>()));
     return this;
   }
 }

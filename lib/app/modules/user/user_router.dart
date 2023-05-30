@@ -6,7 +6,8 @@ import 'package:shelf_router/shelf_router.dart';
 class UserRouter implements Routers {
   @override
   void configure(Router router) {
-    final AuthController authController = GetIt.I.get<AuthController>();
+
+    final authController = GetIt.I.get<AuthController>();
 
     router.mount('/auth/', authController.router);
   }

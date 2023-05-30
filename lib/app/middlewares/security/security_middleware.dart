@@ -14,7 +14,9 @@ import 'package:back_end_cuidapet/app/middlewares/security/security_skip_url.dar
 // para ser utilizado posteriormente. 
 class SecurityMiddleware extends Middlewares {
   final Logger log;
-  final skipURL = <SecuritySkipUrl>[];
+  final skipURL = <SecuritySkipUrl>[
+    SecuritySkipUrl(url: '/auth/register', method: 'POST')
+  ];
 
   SecurityMiddleware({
     required this.log,

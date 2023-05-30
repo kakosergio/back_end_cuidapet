@@ -10,20 +10,21 @@ import 'package:mysql1/mysql1.dart';
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
-  final DatabaseConnection connection;
-  final Logger log;
+  final DatabaseConnection _connection;
+  final Logger _log;
 
   UserRepositoryImpl({
-    required this.connection,
-    required this.log,
-  });
+    required DatabaseConnection connection,
+    required Logger log,
+  })  : _connection = connection,
+        _log = log;
 
   @override
   Future<User> create(User user) async {
     late final MySqlConnection? conn;
 
     try {
-      conn = await connection.openConnection();
+      conn = await _connection.openConnection();
       final query =
           '''INSERT usuario(email, tipo_cadastro, img_avatar, senha, fornecedor_id, social_id)
       values(?, ?, ?, ?, ?, ?)
@@ -42,10 +43,10 @@ class UserRepositoryImpl implements UserRepository {
       return user.copyWith(id: userId, password: null);
     } on MySqlException catch (e, s) {
       if (e.message.contains('usuario.email_UNIQUE')) {
-        log.error('Usuario ja cadastrado na base de dados', e, s);
+        _log.error('Usuario ja cadastrado na base de dados', e, s);
         throw UserExistsException();
       }
-      log.error('Erro ao criar o usuario', e, s);
+      _log.error('Erro ao criar o usuario', e, s);
       throw DatabaseException(message: 'Erro ao criar o usuario', exception: e);
     } finally {
       await conn?.close();

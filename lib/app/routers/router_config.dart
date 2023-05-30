@@ -6,7 +6,6 @@ class RouterConfig {
   final Router _router;
   final List<Routers> _routers = [
     UserRouter(),
-    
   ];
 
   RouterConfig(this._router);

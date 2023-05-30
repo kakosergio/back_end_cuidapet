@@ -10,7 +10,7 @@ class UserServiceImpl implements UserService {
   final UserRepository _userRepository;
 
   UserServiceImpl({
-    required userRepository,
+    required UserRepository userRepository,
   }) : _userRepository = userRepository;
 
   @override

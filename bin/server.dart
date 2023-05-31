@@ -14,9 +14,9 @@ void main(List<String> args) async {
   final ip = InternetAddress.anyIPv4;
 
   // Calling AppConfig
-  final appConfig = AppConfig();
-  await appConfig.loadAppConfig();
   final router = Router();
+  final appConfig = AppConfig();
+  await appConfig.loadAppConfig(router);
   final getIt = GetIt.I;
 
   // Configure a pipeline that logs requests.

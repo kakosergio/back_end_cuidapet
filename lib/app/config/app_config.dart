@@ -3,15 +3,18 @@ import 'package:back_end_cuidapet/app/config/environments.dart';
 import 'package:back_end_cuidapet/app/config/service_locator_config.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/logger/logger_impl.dart';
+import 'package:back_end_cuidapet/app/routers/router_config.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shelf_router/shelf_router.dart';
 
 // AppConfig instancia todas as configurações de banco de dados do aplicativo
 class AppConfig {
-  Future<void> loadAppConfig() async {
+  Future<void> loadAppConfig(Router router) async {
     _loadEnv();
     _loadDatabaseConfig();
     _configLogger();
     _loadDependencies();
+    _loadRoutersConfig(router);
   }
 
   void _loadEnv() async =>
@@ -39,4 +42,7 @@ class AppConfig {
       GetIt.I.registerLazySingleton<Logger>(() => LoggerImpl());
 
   void _loadDependencies() => configureDependencies();
+
+  void _loadRoutersConfig(Router router) => RouterConfig(router);
+  
 }

@@ -1,7 +1,7 @@
 import 'package:back_end_cuidapet/app/database/database_connection.dart';
 import 'package:back_end_cuidapet/app/exceptions/database_exception.dart';
 import 'package:back_end_cuidapet/app/exceptions/user_exists_exception.dart';
-import 'package:back_end_cuidapet/app/helpers/generate_sha256_hash_helper.dart';
+import 'package:back_end_cuidapet/app/helpers/sha256_hash_generator.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/data/user_repository.dart';
 import 'package:back_end_cuidapet/entities/user.dart';
@@ -34,7 +34,7 @@ class UserRepositoryImpl implements UserRepository {
         user.email,
         user.registerType,
         user.imageAvatar,
-        GenerateSha256HashHelper(password: user.password),
+        Sha256HashGenerator.generate(user.password ?? ''),
         user.supplierId,
         user.socialKey
       ]);

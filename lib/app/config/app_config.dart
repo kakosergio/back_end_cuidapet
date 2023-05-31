@@ -43,6 +43,6 @@ class AppConfig {
 
   void _loadDependencies() => configureDependencies();
 
-  void _loadRoutersConfig(Router router) => RouterConfig(router);
-  
+  void _loadRoutersConfig(Router router) => RouterConfig(router).configure();
+
 }

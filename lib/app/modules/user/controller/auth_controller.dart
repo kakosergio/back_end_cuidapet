@@ -31,7 +31,7 @@ class AuthController {
 
     if (!loginViewModel.socialLogin) {
       await _userService.login(
-          loginViewModel.login, loginViewModel.password, false);
+          loginViewModel.email, loginViewModel.password, false);
     }
 
     return Response.ok(jsonEncode(''));

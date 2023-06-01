@@ -3,4 +3,5 @@ import 'package:back_end_cuidapet/entities/user.dart';
 
 abstract interface class UserService {
   Future<User> createUser(UserSaveInputModel user);
+  Future<User> login(String email, String password, bool supplierUser);
 }

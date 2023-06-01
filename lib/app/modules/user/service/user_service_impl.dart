@@ -23,4 +23,8 @@ class UserServiceImpl implements UserService {
 
     return _userRepository.create(userEntity);
   }
+
+  @override
+  Future<User> login(String email, String password, bool supplierUser) =>
+      _userRepository.login(email, password, supplierUser);
 }

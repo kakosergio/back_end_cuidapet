@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:back_end_cuidapet/app/exceptions/user_exists_exception.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/login_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_save_input_model.dart';
+import 'package:back_end_cuidapet/entities/user.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -20,6 +22,20 @@ class AuthController {
   AuthController({required UserService userService, required Logger log})
       : _userService = userService,
         _log = log;
+
+  @Route.post('/')
+  Future<Response> login(Request request) async {
+    final loginViewModel = LoginViewModel(await request.readAsString());
+
+    User user;
+
+    if (!loginViewModel.socialLogin) {
+      await _userService.login(
+          loginViewModel.login, loginViewModel.password, false);
+    }
+
+    return Response.ok(jsonEncode(''));
+  }
 
   @Route.post('/register')
   Future<Response> saveUser(Request request) async {

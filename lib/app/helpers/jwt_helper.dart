@@ -7,6 +7,18 @@ abstract class JwtHelper {
   static final String _jwtSecret =
       _environments['JWT_SECRET'] ?? _environments['jwtSecret']!;
 
+  static String generateJWT(int userId, int? supplierId) {
+    final claimSet = JwtClaim(
+        issuer: 'cuidapet',
+        subject: userId.toString(),
+        expiry: DateTime.now().add(Duration(days: 1)),
+        notBefore: DateTime.now(),
+        issuedAt: DateTime.now(),
+        otherClaims: <String, dynamic>{'supplier': supplierId},
+        maxAge: const Duration(days: 1));
+    return 'Bearer ${issueJwtHS256(claimSet, _jwtSecret)}';
+  }
+
   static JwtClaim getClaims(String token) =>
       verifyJwtHS256Signature(token, _jwtSecret);
 }

@@ -7,7 +7,7 @@ import 'package:back_end_cuidapet/app/routers/router_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-// AppConfig instancia todas as configurações de banco de dados do aplicativo
+// AppConfig instancia todas as configurações do aplicativo
 class AppConfig {
   Future<void> loadAppConfig(Router router) async {
     _loadEnv();

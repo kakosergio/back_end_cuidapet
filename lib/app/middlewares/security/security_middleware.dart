@@ -8,14 +8,15 @@ import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/middlewares/middlewares.dart';
 import 'package:back_end_cuidapet/app/middlewares/security/security_skip_url.dart';
 
-// SecurityMiddleware recebe, através de sua função [execute] o Request do header anterior
+// SecurityMiddleware recebe, através de sua função [execute] o Request do handler anterior
 // e faz, em resumo, a verificação do token, a descriptografia, recupera os claims,
 // pega a informação de userId, token e supplier e repassa para o [header] da requisição,
 // para ser utilizado posteriormente. 
 class SecurityMiddleware extends Middlewares {
   final Logger log;
   final skipURL = <SecuritySkipUrl>[
-    SecuritySkipUrl(url: '/auth/register', method: 'POST')
+    SecuritySkipUrl(url: '/auth/register', method: 'POST'),
+    SecuritySkipUrl(url: '/auth/', method: 'POST')
   ];
 
   SecurityMiddleware({

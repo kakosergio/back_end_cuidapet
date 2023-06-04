@@ -55,7 +55,8 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<User> login(String email, String password, bool supplierUser) async {
+  Future<User> emailLogin(
+      String email, String password, bool supplierUser) async {
     late MySqlConnection conn;
 
     try {
@@ -96,6 +97,49 @@ class UserRepositoryImpl implements UserRepository {
     } on MySqlException catch (e, s) {
       _log.error('erro ao realizar login', e, s);
       throw DatabaseException(message: e.message);
+    } finally {
+      await conn.close();
+    }
+  }
+
+  @override
+  Future<User> socialLogin(
+      String email, String socialKey, bool socialType) async {
+    late MySqlConnection conn;
+
+    try {
+      conn = await _connection.openConnection();
+
+      final result =
+          await conn.query('SELECT * FROM usuario WHERE email = ?', [email]);
+
+      final dataMySql = result.first;
+
+      if (result.isEmpty) {
+        throw UserNotFoundException(message: 'Usuario não encontrado');
+      } else if (dataMySql['social_id'] == null ||
+          dataMySql['social_id'] != socialKey) {
+        await conn.query(
+          '''UPDATE usuario 
+            SET social_id = ?, tipo_cadastro = ? 
+            WHERE email = ?''',
+          [
+            socialKey,
+            socialType,
+            dataMySql['id'],
+          ],
+        );
+      }
+      return User(
+        id: dataMySql['id'],
+        email: dataMySql['email'],
+        registerType: dataMySql['tipo_cadastro'],
+        iosToken: (dataMySql['ios_token'] as Blob?).toString(),
+        androidToken: (dataMySql['android_token'] as Blob?).toString(),
+        refreshToken: (dataMySql['refresh_token'] as Blob?).toString(),
+        imageAvatar: (dataMySql['img_avatar'] as Blob?).toString(),
+        supplierId: dataMySql['fornecedor_id'],
+      );
     } finally {
       await conn.close();
     }

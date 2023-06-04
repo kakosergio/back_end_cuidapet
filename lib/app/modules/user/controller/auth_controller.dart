@@ -33,7 +33,7 @@ class AuthController {
       User user;
 
       if (!loginViewModel.socialLogin) {
-        user = await _userService.login(
+        user = await _userService.emailLogin(
             loginViewModel.email, loginViewModel.password, loginViewModel.supplierUser);
       } else {
         user = User();

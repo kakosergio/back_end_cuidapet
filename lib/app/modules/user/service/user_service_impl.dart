@@ -25,6 +25,12 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<User> login(String email, String password, bool supplierUser) =>
-      _userRepository.login(email, password, supplierUser);
+  Future<User> emailLogin(String email, String password, bool supplierUser) =>
+      _userRepository.emailLogin(email, password, supplierUser);
+      
+        @override
+        Future<User> socialLogin(String email, String avatar, String socialType, String socialKey) {
+          // TODO: implement socialLogin
+          throw UnimplementedError();
+        }
 }

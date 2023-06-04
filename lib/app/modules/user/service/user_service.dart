@@ -3,5 +3,6 @@ import 'package:back_end_cuidapet/entities/user.dart';
 
 abstract interface class UserService {
   Future<User> createUser(UserSaveInputModel user);
-  Future<User> login(String email, String password, bool supplierUser);
+  Future<User> emailLogin(String email, String password, bool supplierUser);
+  Future<User> socialLogin(String email, String avatar, String socialType, String socialKey);
 }

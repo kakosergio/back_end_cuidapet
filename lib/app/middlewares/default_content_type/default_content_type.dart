@@ -6,6 +6,6 @@ class DefaultContentType extends Middlewares {
   Future<Response> execute(Request request) async {
     final response = await innerHandler(request);
     return response
-        .change(headers: {'content-type': 'application/json;charset:utf-8'}); 
+        .change(headers: {'content-type': 'application/json;charset=utf-8'}); 
   }
 }

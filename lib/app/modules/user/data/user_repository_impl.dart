@@ -104,7 +104,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<User> socialLogin(
-      String email, String socialKey, bool socialType) async {
+      String email, String socialKey, String socialType) async {
     late MySqlConnection conn;
 
     try {
@@ -122,7 +122,7 @@ class UserRepositoryImpl implements UserRepository {
         await conn.query(
           '''UPDATE usuario 
             SET social_id = ?, tipo_cadastro = ? 
-            WHERE email = ?''',
+            WHERE id = ?''',
           [
             socialKey,
             socialType,

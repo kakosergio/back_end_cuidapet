@@ -39,8 +39,10 @@ extension GetItInjectableX on _i1.GetIt {
           connection: gh<_i3.DatabaseConnection>(),
           log: gh<_i8.Logger>(),
         ));
-    gh.lazySingleton<_i9.UserService>(
-        () => _i10.UserServiceImpl(userRepository: gh<_i6.UserRepository>()));
+    gh.lazySingleton<_i9.UserService>(() => _i10.UserServiceImpl(
+          userRepository: gh<_i6.UserRepository>(),
+          log: gh<_i8.Logger>(),
+        ));
     gh.factory<_i11.AuthController>(() => _i11.AuthController(
           userService: gh<_i9.UserService>(),
           log: gh<_i8.Logger>(),

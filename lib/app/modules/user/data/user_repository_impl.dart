@@ -109,37 +109,37 @@ class UserRepositoryImpl implements UserRepository {
 
     try {
       conn = await _connection.openConnection();
-
       final result =
           await conn.query('SELECT * FROM usuario WHERE email = ?', [email]);
 
-      final dataMySql = result.first;
-
       if (result.isEmpty) {
         throw UserNotFoundException(message: 'Usuario não encontrado');
-      } else if (dataMySql['social_id'] == null ||
-          dataMySql['social_id'] != socialKey) {
-        await conn.query(
-          '''UPDATE usuario 
+      } else {
+        final dataMySql = result.first;
+        if (dataMySql['social_id'] == null ||
+            dataMySql['social_id'] != socialKey) {
+          await conn.query(
+            '''UPDATE usuario 
             SET social_id = ?, tipo_cadastro = ? 
             WHERE id = ?''',
-          [
-            socialKey,
-            socialType,
-            dataMySql['id'],
-          ],
+            [
+              socialKey,
+              socialType,
+              dataMySql['id'],
+            ],
+          );
+        }
+        return User(
+          id: dataMySql['id'],
+          email: dataMySql['email'],
+          registerType: dataMySql['tipo_cadastro'],
+          iosToken: (dataMySql['ios_token'] as Blob?).toString(),
+          androidToken: (dataMySql['android_token'] as Blob?).toString(),
+          refreshToken: (dataMySql['refresh_token'] as Blob?).toString(),
+          imageAvatar: (dataMySql['img_avatar'] as Blob?).toString(),
+          supplierId: dataMySql['fornecedor_id'],
         );
       }
-      return User(
-        id: dataMySql['id'],
-        email: dataMySql['email'],
-        registerType: dataMySql['tipo_cadastro'],
-        iosToken: (dataMySql['ios_token'] as Blob?).toString(),
-        androidToken: (dataMySql['android_token'] as Blob?).toString(),
-        refreshToken: (dataMySql['refresh_token'] as Blob?).toString(),
-        imageAvatar: (dataMySql['img_avatar'] as Blob?).toString(),
-        supplierId: dataMySql['fornecedor_id'],
-      );
     } finally {
       await conn.close();
     }

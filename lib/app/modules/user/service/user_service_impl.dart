@@ -39,8 +39,8 @@ class UserServiceImpl implements UserService {
       String email, String avatar, String socialType, String socialKey) async {
     try {
       return await _userRepository.socialLogin(email, socialKey, socialType);
-    } on UserNotFoundException catch (e, s) {
-      _log.info('Usuario não encontrado, criando um novo', e, s);
+    } on UserNotFoundException catch (e) {
+      _log.info('Usuario não encontrado, criando um novo', e);
       final user = User(
           email: email,
           imageAvatar: avatar,

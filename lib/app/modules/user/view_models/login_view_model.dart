@@ -14,7 +14,7 @@ class LoginViewModel extends RequestMappingHelper {
   @override
   void map() {
     email = data['email'];
-    password = data['password'];
+    password = data['password'] ?? '';
     socialLogin = data['social_login'];
     avatar = data['avatar'];
     socialType = data['social_type'];

@@ -7,5 +7,5 @@ abstract interface class UserService {
   Future<User> emailLogin(String email, String password, bool supplierUser);
   Future<User> socialLogin(
       String email, String avatar, String socialType, String socialKey);
-  Future<(String refreshToken, String accessToken)> confirmLogin(UserConfirmInputModel inputModel);
+  Future<(String accessToken, String refreshToken)> confirmLogin(UserConfirmInputModel inputModel);
 }

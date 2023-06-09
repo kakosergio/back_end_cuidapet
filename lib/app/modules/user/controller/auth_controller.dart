@@ -82,7 +82,7 @@ class AuthController {
     final inputModel = UserConfirmInputModel(await request.readAsString(),
         userId: userId, supplierId: supplierId);
 
-    final (refreshToken, accessToken) = await _userService.confirmLogin(inputModel);
+    final (accessToken, refreshToken) = await _userService.confirmLogin(inputModel);
 
     return Response.ok(jsonEncode({
       'access_token': 'Bearer $accessToken',

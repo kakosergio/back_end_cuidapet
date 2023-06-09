@@ -77,7 +77,7 @@ class AuthController {
   Future<Response> confirmLogin(Request request) async {
     final userId = int.parse(request.headers['user']!);
     final supplierId = int.tryParse(request.headers['supplier']!);
-    // final token = JwtHelper.generateJWT(userId, supplierId);
+    // final token = JwtHelper.generateJWT(userId, supplierId); - passado para a camada de services
 
     final inputModel = UserConfirmInputModel(await request.readAsString(),
         userId: userId, supplierId: supplierId);

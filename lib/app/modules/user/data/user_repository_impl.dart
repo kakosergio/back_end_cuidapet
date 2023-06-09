@@ -156,24 +156,26 @@ class UserRepositoryImpl implements UserRepository {
     try {
       conn = await _connection.openConnection();
 
-      final setParams = {};
+      final setParams = <String, String?>{};
 
       if (user.iosToken != null) {
-        setParams.putIfAbsent('ios_token', () => user.iosToken);
+        setParams['ios_token'] = user.iosToken;
+        // setParams.putIfAbsent('ios_token', () => user.iosToken);
       } else {
-        setParams.putIfAbsent('android_token', () => user.androidToken);
+        setParams['android_token'] = user.androidToken;
+        // setParams.putIfAbsent('android_token', () => user.androidToken);
       }
 
       final query = '''
         UPDATE usuario
         SET
-          ${setParams.keys.elementAt(0)} = ?,
+          ${setParams.keys.first} = ?,
           refresh_token = ?
         WHERE
           id = ?
       ''';
       await conn.query(
-          query, [setParams.values.elementAt(0), user.refreshToken, user.id]);
+          query, [setParams.values.first, user.refreshToken, user.id]);
     } on MySqlException catch (e, s) {
       _log.error('Erro ao confirmar login', e, s);
       throw DatabaseException();

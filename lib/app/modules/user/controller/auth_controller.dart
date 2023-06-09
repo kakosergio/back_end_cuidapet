@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:back_end_cuidapet/app/exceptions/user_exists_exception.dart';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
-import 'package:back_end_cuidapet/app/helpers/sha256_hash_generator.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/login_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
@@ -76,17 +75,17 @@ class AuthController {
 
   @Route('PATCH', '/confirm')
   Future<Response> confirmLogin(Request request) async {
-    final user = int.parse(request.headers['user']!);
-    final supplier = int.tryParse(request.headers['supplier']!);
-    final token = JwtHelper.generateJWT(user, supplier);
+    final userId = int.parse(request.headers['user']!);
+    final supplierId = int.tryParse(request.headers['supplier']!);
+    // final token = JwtHelper.generateJWT(userId, supplierId);
 
     final inputModel = UserConfirmInputModel(await request.readAsString(),
-        userId: user, accessToken: token);
+        userId: userId, supplierId: supplierId);
 
-    final refreshToken = await _userService.confirmLogin(inputModel);
+    final (refreshToken, accessToken) = await _userService.confirmLogin(inputModel);
 
     return Response.ok(jsonEncode({
-      'access_token': 'Bearer $token',
+      'access_token': 'Bearer $accessToken',
       'refresh_token': refreshToken,
     },),);
   }

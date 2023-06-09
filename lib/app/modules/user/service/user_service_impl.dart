@@ -55,14 +55,16 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<String> confirmLogin(UserConfirmInputModel inputModel) async {
-    final refreshToken = JwtHelper.refreshToken(inputModel.accessToken);
+  Future<(String refreshToken, String accessToken)> confirmLogin(UserConfirmInputModel inputModel) async {
+    final accessToken =
+        JwtHelper.generateJWT(inputModel.userId, inputModel.supplierId);
+    final refreshToken = JwtHelper.refreshToken(accessToken);
     final user = User(
         id: inputModel.userId,
         refreshToken: refreshToken,
         iosToken: inputModel.iosDeviceToken,
         androidToken: inputModel.androidDeviceToken);
     await _userRepository.updateUserDeviceAndRefreshToken(user);
-    return refreshToken;
+    return (refreshToken, accessToken);
   }
 }

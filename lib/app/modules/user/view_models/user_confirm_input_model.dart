@@ -3,8 +3,8 @@ import 'package:back_end_cuidapet/app/helpers/request_mapping.dart';
 class UserConfirmInputModel extends RequestMapping {
   final int userId;
   final int? supplierId;
-  late final String iosDeviceToken;
-  late final String androidDeviceToken;
+  late final String? iosDeviceToken;
+  late final String? androidDeviceToken;
 
   UserConfirmInputModel(
     super.dataRequest, {

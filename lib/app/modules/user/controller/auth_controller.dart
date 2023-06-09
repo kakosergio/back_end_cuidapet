@@ -76,7 +76,7 @@ class AuthController {
   @Route('PATCH', '/confirm')
   Future<Response> confirmLogin(Request request) async {
     final userId = int.parse(request.headers['user']!);
-    final supplierId = int.tryParse(request.headers['supplier']!);
+    final supplierId = int.tryParse(request.headers['supplier'] ?? '');
     // final token = JwtHelper.generateJWT(userId, supplierId); - passado para a camada de services
 
     final inputModel = UserConfirmInputModel(await request.readAsString(),
@@ -85,7 +85,7 @@ class AuthController {
     final (accessToken, refreshToken) = await _userService.confirmLogin(inputModel);
 
     return Response.ok(jsonEncode({
-      'access_token': 'Bearer $accessToken',
+      'access_token': accessToken,
       'refresh_token': refreshToken,
     },),);
   }

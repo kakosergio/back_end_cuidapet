@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-abstract class RequestMappingHelper {
+abstract class RequestMapping {
   // Por que não fazer um toMap ou algo assim? Porque vai reutilizar bastante.
   // Senão teria que implementar toMap em todos eles, e com uma classe abstrata
   // Ele te obriga a implementar a função map e tudo funciona
   final Map<String, dynamic> data;
 
-  RequestMappingHelper.empty() : data = {};
+  RequestMapping.empty() : data = {};
 
-  RequestMappingHelper(String dataRequest) : data = jsonDecode(dataRequest) {
+  RequestMapping(String dataRequest) : data = jsonDecode(dataRequest) {
     map();
   }
 

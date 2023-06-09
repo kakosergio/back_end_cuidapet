@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:back_end_cuidapet/app/exceptions/user_exists_exception.dart';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
+import 'package:back_end_cuidapet/app/helpers/sha256_hash_generator.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/login_view_model.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_save_input_model.dart';
 import 'package:back_end_cuidapet/entities/user.dart';
 import 'package:injectable/injectable.dart';
@@ -70,6 +72,23 @@ class AuthController {
       _log.error('Erro ao cadastrar usuario', e);
       return Response.internalServerError();
     }
+  }
+
+  @Route('PATCH', '/confirm')
+  Future<Response> confirmLogin(Request request) async {
+    final user = int.parse(request.headers['user']!);
+    final supplier = int.tryParse(request.headers['supplier']!);
+    final token = JwtHelper.generateJWT(user, supplier);
+
+    final inputModel = UserConfirmInputModel(await request.readAsString(),
+        userId: user, accessToken: token);
+
+    final refreshToken = await _userService.confirmLogin(inputModel);
+
+    return Response.ok(jsonEncode({
+      'access_token': 'Bearer $token',
+      'refresh_token': refreshToken,
+    },),);
   }
 
   Router get router => _$AuthControllerRouter(this);

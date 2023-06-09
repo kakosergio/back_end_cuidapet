@@ -1,6 +1,6 @@
-import 'package:back_end_cuidapet/app/helpers/request_mapping_helper.dart';
+import 'package:back_end_cuidapet/app/helpers/request_mapping.dart';
 
-class LoginViewModel extends RequestMappingHelper {
+class LoginViewModel extends RequestMapping {
   late String email;
   late String password;
   late bool socialLogin;
@@ -16,9 +16,9 @@ class LoginViewModel extends RequestMappingHelper {
     email = data['email'];
     password = data['password'] ?? '';
     socialLogin = data['social_login'];
-    avatar = data['avatar'];
-    socialType = data['social_type'];
-    socialKey = data['social_key'];
+    avatar = data['avatar'] ?? '';
+    socialType = data['social_type'] ?? '';
+    socialKey = data['social_key'] ?? '';
     supplierUser = data['supplier_user'];
   }
 }

@@ -61,6 +61,10 @@ class UserRepositoryImpl implements UserRepository {
 
     try {
       conn = await _connection.openConnection();
+      // Seleciona todos os usuários que tiverem esse e-mail e essa senha passada
+      // Como o e-mail é UNIQUE no banco de dados, será retornado só um valor
+      // O legal é que se o e-mail ou a senha não baterem, ele nunca vai retor-
+      // nar um valor. Muito bom!
       var query = '''
           SELECT *
           FROM usuario
@@ -142,6 +146,39 @@ class UserRepositoryImpl implements UserRepository {
       }
     } finally {
       await conn.close();
+    }
+  }
+
+  @override
+  Future<void> updateUserDeviceAndRefreshToken(User user) async {
+    MySqlConnection? conn;
+
+    try {
+      conn = await _connection.openConnection();
+
+      final setParams = {};
+
+      if (user.iosToken != null) {
+        setParams.putIfAbsent('ios_token', () => user.iosToken);
+      } else {
+        setParams.putIfAbsent('android_token', () => user.androidToken);
+      }
+
+      final query = '''
+        UPDATE usuario
+        SET
+          ${setParams.keys.elementAt(0)} = ?,
+          refresh_token = ?
+        WHERE
+          id = ?
+      ''';
+      await conn.query(
+          query, [setParams.values.elementAt(0), user.refreshToken, user.id]);
+    } on MySqlException catch (e, s) {
+      _log.error('Erro ao confirmar login', e, s);
+      throw DatabaseException();
+    } finally {
+      await conn?.close();
     }
   }
 }

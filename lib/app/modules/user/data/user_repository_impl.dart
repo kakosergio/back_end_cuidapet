@@ -174,11 +174,26 @@ class UserRepositoryImpl implements UserRepository {
         WHERE
           id = ?
       ''';
-      await conn.query(
-          query, [setParams.values.first, user.refreshToken, user.id]);
+      await conn
+          .query(query, [setParams.values.first, user.refreshToken, user.id]);
     } on MySqlException catch (e, s) {
       _log.error('Erro ao confirmar login', e, s);
       throw DatabaseException();
+    } finally {
+      await conn?.close();
+    }
+  }
+
+  @override
+  Future<void> updateRefreshToken(User user) async {
+    MySqlConnection? conn;
+
+    try {
+      conn = await _connection.openConnection();
+      await conn.query('UPDATE usuario SET refresh_token = ? WHERE id = ?', [
+        user.refreshToken,
+        user.id,
+      ]);
     } finally {
       await conn?.close();
     }

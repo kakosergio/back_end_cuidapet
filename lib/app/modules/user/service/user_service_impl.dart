@@ -1,12 +1,16 @@
+import 'package:back_end_cuidapet/app/exceptions/service_exception.dart';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/refresh_token_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/user_refresh_token_input_model.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:back_end_cuidapet/app/modules/user/data/user_repository.dart';
 import 'package:back_end_cuidapet/app/modules/user/service/user_service.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_save_input_model.dart';
 import 'package:back_end_cuidapet/entities/user.dart';
+import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 import '../../../logger/logger.dart';
 
@@ -55,9 +59,11 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<(String, String)> confirmLogin(UserConfirmInputModel inputModel) async {
+  Future<(String, String)> confirmLogin(
+      UserConfirmInputModel inputModel) async {
     final accessToken =
-        JwtHelper.generateJWT(inputModel.userId, inputModel.supplierId).replaceAll('Bearer ', '');
+        JwtHelper.generateJWT(inputModel.userId, inputModel.supplierId)
+            .replaceAll('Bearer ', '');
     final refreshToken = JwtHelper.refreshToken(accessToken);
     final user = User(
         id: inputModel.userId,
@@ -66,5 +72,31 @@ class UserServiceImpl implements UserService {
         androidToken: inputModel.androidDeviceToken);
     await _userRepository.updateUserDeviceAndRefreshToken(user);
     return ('Bearer $accessToken', refreshToken);
+  }
+
+  @override
+  Future<RefreshTokenViewModel> refreshToken(UserRefreshTokenInputModel model) {
+    _validateRefreshToken(model);
+  }
+
+  void _validateRefreshToken(UserRefreshTokenInputModel model) {
+    const String error = 'Invalid Refresh Token';
+    try {
+      final refreshToken = model.refreshToken.split(' ');
+
+      if (refreshToken.length != 2 || refreshToken.first != 'Bearer') {
+        _log.error(error);
+        throw ServiceException(error);
+      }
+      final refreshTokenClaims = JwtHelper.getClaims(refreshToken.last);
+      refreshTokenClaims.validate(issuer: model.accessToken);
+    } on ServiceException {
+      rethrow;
+    } on JwtException {
+      _log.error(error);
+      throw ServiceException(error);
+    } catch (e) {
+      throw ServiceException('Error validating Refresh Token');
+    }
   }
 }

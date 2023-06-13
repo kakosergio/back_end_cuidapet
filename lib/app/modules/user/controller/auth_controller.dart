@@ -90,5 +90,10 @@ class AuthController {
     },),);
   }
 
+  @Route.put('/refresh')
+  Future<Response> refreshToken (Request request) async{
+     return Response.ok(jsonEncode(''));
+  }
+
   Router get router => _$AuthControllerRouter(this);
 }

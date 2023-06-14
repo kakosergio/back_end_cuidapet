@@ -13,6 +13,7 @@ class LoginViewModel extends RequestMapping {
 
   @override
   void map() {
+    print(data);
     email = data['email'];
     password = data['password'] ?? '';
     socialLogin = data['social_login'];

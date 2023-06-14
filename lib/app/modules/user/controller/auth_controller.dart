@@ -7,6 +7,7 @@ import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/login_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/user_refresh_token_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_save_input_model.dart';
 import 'package:back_end_cuidapet/entities/user.dart';
 import 'package:injectable/injectable.dart';
@@ -82,17 +83,31 @@ class AuthController {
     final inputModel = UserConfirmInputModel(await request.readAsString(),
         userId: userId, supplierId: supplierId);
 
-    final (accessToken, refreshToken) = await _userService.confirmLogin(inputModel);
+    final (accessToken, refreshToken) =
+        await _userService.confirmLogin(inputModel);
 
-    return Response.ok(jsonEncode({
-      'access_token': accessToken,
-      'refresh_token': refreshToken,
-    },),);
+    return Response.ok(
+      jsonEncode(
+        {
+          'access_token': accessToken,
+          'refresh_token': refreshToken,
+        },
+      ),
+    );
   }
 
   @Route.put('/refresh')
-  Future<Response> refreshToken (Request request) async{
-     return Response.ok(jsonEncode(''));
+  Future<Response> refreshToken(Request request) async {
+    final user = int.parse(request.headers['user']!);
+    final supplier = int.tryParse(request.headers['supplier'] ?? '');
+    final accessToken = request.headers['access_token']!;
+    final model = UserRefreshTokenInputModel(await request.readAsString(),
+        user: user, accessToken: accessToken, supplier: supplier);
+
+    final userRefreshToken = await _userService.refreshToken(model);
+
+    return Response.ok(jsonEncode({'access_token': userRefreshToken.accessToken,
+    'refresh_token': userRefreshToken.refreshToken}));
   }
 
   Router get router => _$AuthControllerRouter(this);

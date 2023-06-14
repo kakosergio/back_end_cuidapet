@@ -75,8 +75,21 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<RefreshTokenViewModel> refreshToken(UserRefreshTokenInputModel model) {
+  Future<RefreshTokenViewModel> refreshToken(
+      UserRefreshTokenInputModel model) async {
     _validateRefreshToken(model);
+    final newAccessToken = JwtHelper.generateJWT(model.user, model.supplier);
+    final newRefreshToken =
+        JwtHelper.refreshToken(newAccessToken.replaceAll('Bearer ', ''));
+
+    final user = User(
+      id: model.user,
+      refreshToken: newRefreshToken,
+    );
+    await _userRepository.updateRefreshToken(user);
+
+    return RefreshTokenViewModel(
+        accessToken: newAccessToken, refreshToken: newRefreshToken);
   }
 
   void _validateRefreshToken(UserRefreshTokenInputModel model) {

@@ -98,16 +98,27 @@ class AuthController {
 
   @Route.put('/refresh')
   Future<Response> refreshToken(Request request) async {
-    final user = int.parse(request.headers['user']!);
-    final supplier = int.tryParse(request.headers['supplier'] ?? '');
-    final accessToken = request.headers['access_token']!;
-    final model = UserRefreshTokenInputModel(await request.readAsString(),
-        user: user, accessToken: accessToken, supplier: supplier);
+    try {
+      final user = int.parse(request.headers['user']!);
+      final supplier = int.tryParse(request.headers['supplier'] ?? '');
+      final accessToken = request.headers['access_token']!;
+      final model = UserRefreshTokenInputModel(await request.readAsString(),
+          user: user, accessToken: accessToken, supplier: supplier);
 
-    final userRefreshToken = await _userService.refreshToken(model);
+      final userRefreshToken = await _userService.refreshToken(model);
 
-    return Response.ok(jsonEncode({'access_token': userRefreshToken.accessToken,
-    'refresh_token': userRefreshToken.refreshToken}));
+      return Response.ok(
+        jsonEncode(
+          {
+            'access_token': userRefreshToken.accessToken,
+            'refresh_token': userRefreshToken.refreshToken
+          },
+        ),
+      );
+    } catch (e) {
+      return Response.internalServerError(
+          body: jsonEncode({'message': 'Erro ao atualizar token'}));
+    }
   }
 
   Router get router => _$AuthControllerRouter(this);

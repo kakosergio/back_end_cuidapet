@@ -6,4 +6,5 @@ abstract interface class UserRepository {
   Future<User> socialLogin(String email, String socialKey, String socialType);
   Future<void> updateUserDeviceAndRefreshToken(User user);
   Future<void> updateRefreshToken(User user);
+  Future<User> findById(int id);
 }

@@ -198,4 +198,10 @@ class UserRepositoryImpl implements UserRepository {
       await conn?.close();
     }
   }
+  
+  @override
+  Future<User> findById(int id) {
+    // TODO: implement findById
+    throw UnimplementedError();
+  }
 }

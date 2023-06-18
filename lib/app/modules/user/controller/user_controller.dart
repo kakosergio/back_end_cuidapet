@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
-import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/service/user_service.dart';
 import 'package:injectable/injectable.dart';

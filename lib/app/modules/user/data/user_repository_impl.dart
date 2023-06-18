@@ -198,10 +198,34 @@ class UserRepositoryImpl implements UserRepository {
       await conn?.close();
     }
   }
-  
+
   @override
-  Future<User> findById(int id) {
-    // TODO: implement findById
-    throw UnimplementedError();
+  Future<User> findById(int id) async {
+    MySqlConnection? conn;
+
+    try {
+      conn = await _connection.openConnection();
+      final result = await conn.query('''
+          SELECT * FROM usuario WHERE id = ?
+      ''', [id]);
+
+      if (result.isEmpty) {
+        throw UserNotFoundException(message: 'User not found');
+      } else {
+        final userSqlData = result.first;
+        return User(
+          id: userSqlData['id'],
+          email: userSqlData['email'],
+          registerType: userSqlData['tipo_cadastro'],
+          iosToken: (userSqlData['ios_token'] as Blob?).toString(),
+          androidToken: (userSqlData['android_token'] as Blob?).toString(),
+          refreshToken: (userSqlData['refresh_token'] as Blob?).toString(),
+          imageAvatar: (userSqlData['img_avatar'] as Blob?).toString(),
+          supplierId: userSqlData['fornecedor_id'],
+        );
+      }
+    } finally {
+      await conn?.close();
+    }
   }
 }

@@ -105,11 +105,14 @@ class UserServiceImpl implements UserService {
       refreshTokenClaims.validate(issuer: model.accessToken);
     } on ServiceException {
       rethrow;
-    } on JwtException catch (e, s){
+    } on JwtException catch (e, s) {
       _log.error(error, e, s);
       throw ServiceException(error);
     } catch (e) {
       throw ServiceException('Error validating Refresh Token');
     }
   }
+
+  @override
+  Future<User> findById(int id) => _userRepository.findById(id);
 }

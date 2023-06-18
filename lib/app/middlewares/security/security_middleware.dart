@@ -11,7 +11,7 @@ import 'package:back_end_cuidapet/app/middlewares/security/security_skip_url.dar
 // SecurityMiddleware recebe, através de sua função [execute] o Request do handler anterior
 // e faz, em resumo, a verificação do token, a descriptografia, recupera os claims,
 // pega a informação de userId, token e supplier e repassa para o [header] da requisição,
-// para ser utilizado posteriormente. 
+// para ser utilizado posteriormente.
 class SecurityMiddleware extends Middlewares {
   final Logger log;
   final skipURL = <SecuritySkipUrl>[

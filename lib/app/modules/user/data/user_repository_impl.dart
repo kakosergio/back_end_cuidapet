@@ -266,10 +266,13 @@ class UserRepositoryImpl implements UserRepository {
     MySqlConnection? conn;
     try {
       conn = await _connection.openConnection();
-      await conn.query('UPDATE usuario SET ${platform.field} = ? WHERE id = ?',
-          [deviceToken, id]);
+      await conn.query('''
+          UPDATE usuario 
+          SET ${platform.field} = ? 
+          WHERE id = ?
+          ''', [deviceToken, id]);
     } on MySqlException catch (e, s) {
-      _log.error('Erro ao atualizar url do avatar', e, s);
+      _log.error('Erro ao atualizar device token', e, s);
       throw DatabaseException();
     } finally {
       await conn?.close();

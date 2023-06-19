@@ -77,10 +77,10 @@ class UserController {
   Future<Response> updateDeviceToken(Request request) async {
     try {
       final userId = int.parse(request.headers['user']!);
-      final updateDeviceTokenInputModel = UpdateDeviceTokenInputModel(
+      final model = UpdateDeviceTokenInputModel(
           await request.readAsString(),
           userId: userId);
-      await _userService.updateDeviceToken(updateDeviceTokenInputModel);
+      await _userService.updateDeviceToken(model);
       return Response.ok(jsonEncode({}));
     } catch (e, s) {
       _log.error('Erro ao atualizar device token', e, s);

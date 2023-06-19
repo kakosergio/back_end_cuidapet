@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/service/user_service.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/update_device_token_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/update_url_avatar_view_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shelf/shelf.dart';
@@ -73,8 +74,12 @@ class UserController {
   }
 
   @Route.put('/device')
-  Future<Response> updateDeviceToken(Request request) async{
-     return Response.ok(jsonEncode(''));
+  Future<Response> updateDeviceToken(Request request) async {
+    final userId = int.parse(request.headers['user']!);
+    final updateDeviceTokenInputModel = UpdateDeviceTokenInputModel(
+        await request.readAsString(),
+        userId: userId);
+    return Response.ok(jsonEncode(''));
   }
 
   Router get router => _$UserControllerRouter(this);

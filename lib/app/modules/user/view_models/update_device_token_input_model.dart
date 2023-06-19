@@ -2,16 +2,20 @@ import 'package:back_end_cuidapet/app/helpers/request_mapping.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/platform.dart';
 
 class UpdateDeviceTokenInputModel extends RequestMapping {
-  final Platform platform;
+  int userId;
+  late Platform platform;
   late String deviceToken;
 
   UpdateDeviceTokenInputModel(
     super.dataRequest, {
-    required this.platform,
+    required this.userId,
   });
 
   @override
   void map() {
-    deviceToken = data[platform.type];
+    deviceToken = data['device_token'];
+    platform = data['platform'].toLowerCase() == 'ios'
+        ? Platform.ios
+        : Platform.android;
   }
 }

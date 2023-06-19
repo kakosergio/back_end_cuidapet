@@ -2,6 +2,7 @@ import 'package:back_end_cuidapet/app/exceptions/service_exception.dart';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/refresh_token_view_model.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/update_device_token_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/update_url_avatar_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_refresh_token_input_model.dart';
@@ -122,4 +123,9 @@ class UserServiceImpl implements UserService {
     await _userRepository.updateAvatar(viewModel.urlAvatar, viewModel.userId);
     return findById(viewModel.userId);
   }
+
+  @override
+  Future<void> updateDeviceToken(UpdateDeviceTokenInputModel model) =>
+      _userRepository.updateDeviceToken(
+          model.userId, model.deviceToken, model.platform);
 }

@@ -1,4 +1,5 @@
 import '../../../../entities/user.dart';
+import '../view_models/platform.dart';
 
 abstract interface class UserRepository {
   Future<User> create(User user);
@@ -8,4 +9,5 @@ abstract interface class UserRepository {
   Future<void> updateRefreshToken(User user);
   Future<User> findById(int id);
   Future<void> updateAvatar(String urlAvatar, int id);
+  Future<void> updateDeviceToken(String deviceToken, Platform platform);
 }

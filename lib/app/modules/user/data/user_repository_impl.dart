@@ -5,6 +5,7 @@ import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/helpers/sha256_hash_generator.dart';
 import 'package:back_end_cuidapet/app/logger/logger.dart';
 import 'package:back_end_cuidapet/app/modules/user/data/user_repository.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/platform.dart';
 import 'package:back_end_cuidapet/entities/user.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mysql1/mysql1.dart';
@@ -254,6 +255,18 @@ class UserRepositoryImpl implements UserRepository {
     } on MySqlException catch (e, s) {
       _log.error('Erro ao atualizar url do avatar', e, s);
       throw DatabaseException();
+    } finally {
+      await conn?.close();
+    }
+  }
+
+  @override
+  Future<void> updateDeviceToken(String deviceToken, Platform platform) async {
+    MySqlConnection? conn;
+    try {
+      conn = await _connection.openConnection();
+      String set = '';
+      
     } finally {
       await conn?.close();
     }

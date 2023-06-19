@@ -72,5 +72,10 @@ class UserController {
     }
   }
 
+  @Route.put('/device')
+  Future<Response> updateDeviceToken(Request request) async{
+     return Response.ok(jsonEncode(''));
+  }
+
   Router get router => _$UserControllerRouter(this);
 }

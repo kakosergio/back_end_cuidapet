@@ -1,4 +1,5 @@
 import 'package:back_end_cuidapet/app/modules/user/view_models/refresh_token_view_model.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/update_url_avatar_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_refresh_token_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_save_input_model.dart';
@@ -13,4 +14,5 @@ abstract interface class UserService {
       UserConfirmInputModel inputModel);
   Future<RefreshTokenViewModel> refreshToken(UserRefreshTokenInputModel model);
   Future<User> findById(int id);
+  Future<User> updateAvatar(UpdateUrlAvatarViewModel viewModel);
 }

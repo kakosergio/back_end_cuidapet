@@ -2,6 +2,7 @@ import 'package:back_end_cuidapet/app/exceptions/service_exception.dart';
 import 'package:back_end_cuidapet/app/exceptions/user_not_found_exception.dart';
 import 'package:back_end_cuidapet/app/helpers/jwt_helper.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/refresh_token_view_model.dart';
+import 'package:back_end_cuidapet/app/modules/user/view_models/update_url_avatar_view_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_confirm_input_model.dart';
 import 'package:back_end_cuidapet/app/modules/user/view_models/user_refresh_token_input_model.dart';
 import 'package:injectable/injectable.dart';
@@ -115,4 +116,10 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<User> findById(int id) => _userRepository.findById(id);
+
+  @override
+  Future<User> updateAvatar(UpdateUrlAvatarViewModel viewModel) async {
+    await _userRepository.updateAvatar(viewModel.urlAvatar, viewModel.userId);
+    return findById(viewModel.userId);
+  }
 }

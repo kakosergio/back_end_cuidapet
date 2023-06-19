@@ -7,4 +7,5 @@ abstract interface class UserRepository {
   Future<void> updateUserDeviceAndRefreshToken(User user);
   Future<void> updateRefreshToken(User user);
   Future<User> findById(int id);
+  Future<void> updateAvatar(String urlAvatar, int id);
 }

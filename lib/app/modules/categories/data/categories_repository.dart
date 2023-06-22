@@ -1,3 +1,5 @@
-abstract interface class CategoriesRepository {
+import '../../../../entities/category.dart';
 
+abstract interface class CategoriesRepository {
+  Future<List<Category>> findAll();
 }

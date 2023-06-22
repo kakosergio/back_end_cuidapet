@@ -8,6 +8,6 @@ class SupplierRouter implements Routers {
   void configure(Router router) {
     final supplierController = GetIt.I.get<SupplierController>();
 
-    router.mount('/supplier/', supplierController.router);
+    router.mount('/suppliers/', supplierController.router);
   }
 }

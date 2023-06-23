@@ -10,7 +10,7 @@ part 'supplier_controller.g.dart';
 class SupplierController {
 
    @Route.get('/')
-   Future<Response> find(Request request) async { 
+   Future<Response> findNearByMe(Request request) async { 
       return Response.ok(jsonEncode(''));
    }
 

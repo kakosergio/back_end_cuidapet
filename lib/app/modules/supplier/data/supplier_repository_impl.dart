@@ -26,7 +26,7 @@ class SupplierRepositoryImpl implements SupplierRepository {
 
     try {
       conn = await _connection.openConnection();
-      await conn.query('''
+      final result = await conn.query('''
         SELECT f.id, f.nome, f.logo, f.categorias_fornecedor_id, 
           (6371 * 
             acos( 
@@ -39,6 +39,14 @@ class SupplierRepositoryImpl implements SupplierRepository {
             FROM fornecedor f 
             HAVING distancia <= $distance;
         ''');
+      return result
+          .map((e) => SupplierNearByMeDto(
+              id: e['id'],
+              name: e['nome'],
+              logo: (e['logo'] as Blob?)?.toString(),
+              distance: e['distancia'],
+              categoryId: e['categorias_fornecedor_id']))
+          .toList();
     } on MySqlException catch (e, s) {
       _log.error('Erro ao buscar os fornecedores próximos', e, s);
       throw DatabaseException();

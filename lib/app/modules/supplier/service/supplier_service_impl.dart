@@ -1,8 +1,21 @@
 import 'package:injectable/injectable.dart';
 
+import 'package:back_end_cuidapet/app/modules/supplier/data/supplier_repository.dart';
+import 'package:back_end_cuidapet/dtos/supplier_near_by_me_dto.dart';
+
 import './supplier_service.dart';
 
 @LazySingleton(as: SupplierService)
 class SupplierServiceImpl implements SupplierService {
+  final SupplierRepository _supplierRepository;
+  static final distance = 5;
 
+  SupplierServiceImpl({
+    required SupplierRepository supplierRepository,
+  }) : _supplierRepository = supplierRepository;
+
+  @override
+  Future<List<SupplierNearByMeDto>> findNearByMe(
+          double lat, double lng) =>
+      _supplierRepository.findNearByPosition(lat, lng, distance);
 }

@@ -51,5 +51,11 @@ class SupplierController {
     }
   }
 
+  @Route.get('/<id|[0-9]+>')
+  Future<Response> findById(Request request, String id) async {
+    final supplier = _supplierService.findById(int.parse(id));
+    return Response.ok(jsonEncode(''));
+  }
+
   Router get router => _$SupplierControllerRouter(this);
 }

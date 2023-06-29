@@ -1,6 +1,7 @@
 import 'package:back_end_cuidapet/app/exceptions/database_exception.dart';
 import 'package:back_end_cuidapet/entities/category.dart';
 import 'package:back_end_cuidapet/entities/supplier.dart';
+import 'package:back_end_cuidapet/entities/supplier_business.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -96,6 +97,38 @@ class SupplierRepositoryImpl implements SupplierRepository {
       return null;
     } on MySqlException catch (e, s) {
       _log.error('Erro ao buscar id do fornecedor', e, s);
+      throw DatabaseException();
+    } finally {
+      await conn?.close();
+    }
+  }
+
+  @override
+  Future<List<SupplierBusiness>> findBusinessBySupplierId(
+      String supplierId) async {
+    MySqlConnection? conn;
+
+    try {
+      conn = await _connection.openConnection();
+      final query = '''
+              SELECT id, nome_servico, valor_servico, fornecedor_id 
+              FROM fornecedor_servicos 
+              WHERE fornecedor_id = ?
+          ''';
+      final result = await conn.query(query, [supplierId]);
+
+      if (result.isNotEmpty) {
+        return result
+            .map((s) => SupplierBusiness(
+                id: s['id'],
+                supplierId: s['fornecedor_id'],
+                name: s['nome_servico'],
+                price: s['valor_servico']))
+            .toList();
+      }
+      return [];
+    } on MySqlException catch (e, s) {
+      _log.error('Erro ao buscar o negócio do fornecedor', e, s);
       throw DatabaseException();
     } finally {
       await conn?.close();

@@ -62,7 +62,10 @@ class SupplierController {
     return Response.ok(_supplierMapper(supplier));
   }
 
-  Router get router => _$SupplierControllerRouter(this);
+  @Route.get('/<supplierId|[0-9]+>/services/')
+  Future<Response> findBusinessBySupplierId(Request request, String supplierId) async{
+     return Response.ok(jsonEncode(''));
+  }
 
   String _supplierMapper(Supplier supplier) => jsonEncode({
         'id': supplier.id,
@@ -78,4 +81,7 @@ class SupplierController {
           'type': supplier.category?.type
         }
       });
+
+  Router get router => _$SupplierControllerRouter(this);
+
 }

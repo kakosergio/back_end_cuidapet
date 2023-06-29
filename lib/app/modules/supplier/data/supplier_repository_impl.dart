@@ -68,12 +68,12 @@ class SupplierRepositoryImpl implements SupplierRepository {
           f.id, f.nome, f.logo, f.endereco, f.telefone, ST_X(f.latlng) as lat, ST_Y(f.latlng) as lng, 
           f.categorias_fornecedor_id, c.nome_categoria, c.tipo_categoria
         FROM fornecedor as f
-          INNER JOIN categorias_fornecedores c on (f.categorias_fornecedor_id = c.id)
+          INNER JOIN categorias_fornecedor c on (f.categorias_fornecedor_id = c.id)
         WHERE 
           f.id = ?
       ''';
 
-      final result = await conn.query(query);
+      final result = await conn.query(query, [id]);
 
       if (result.isNotEmpty) {
         final supplier = result.first;

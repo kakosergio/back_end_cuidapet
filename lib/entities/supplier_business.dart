@@ -1,8 +1,8 @@
 class SupplierBusiness {
   final int id;
   final int supplierId;
-  final int name;
-  final int price;
+  final String name;
+  final double price;
   SupplierBusiness({
     required this.id,
     required this.supplierId,

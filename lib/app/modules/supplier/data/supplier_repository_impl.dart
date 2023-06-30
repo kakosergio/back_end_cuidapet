@@ -105,7 +105,7 @@ class SupplierRepositoryImpl implements SupplierRepository {
 
   @override
   Future<List<SupplierBusiness>> findBusinessBySupplierId(
-      String supplierId) async {
+      int supplierId) async {
     MySqlConnection? conn;
 
     try {

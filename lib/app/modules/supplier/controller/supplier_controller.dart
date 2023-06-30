@@ -63,8 +63,28 @@ class SupplierController {
   }
 
   @Route.get('/<supplierId|[0-9]+>/services/')
-  Future<Response> findBusinessBySupplierId(Request request, String supplierId) async{
-     return Response.ok(jsonEncode(''));
+  Future<Response> findBusinessBySupplierId(
+      Request request, String supplierId) async {
+    try {
+      final supplierBusiness =
+          await _supplierService.findBusinessBySupplier(int.parse(supplierId));
+
+      return Response.ok(jsonEncode(
+        supplierBusiness
+            .map((e) => {
+                  'id': e.id,
+                  'supplier_id': e.supplierId,
+                  'name': e.name,
+                  'price': e.price,
+                })
+            .toList(),
+      ));
+    } catch (e, s) {
+      _log.error('Erro ao buscar serviços por id de fornecedor', e, s);
+      return Response.internalServerError(
+          body: jsonEncode(
+              {'message': 'Erro ao buscar serviços por id de fornecedor'}));
+    }
   }
 
   String _supplierMapper(Supplier supplier) => jsonEncode({
@@ -83,5 +103,4 @@ class SupplierController {
       });
 
   Router get router => _$SupplierControllerRouter(this);
-
 }

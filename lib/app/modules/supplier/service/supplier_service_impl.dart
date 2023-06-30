@@ -1,4 +1,5 @@
 import 'package:back_end_cuidapet/entities/supplier.dart';
+import 'package:back_end_cuidapet/entities/supplier_business.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:back_end_cuidapet/app/modules/supplier/data/supplier_repository.dart';
@@ -21,4 +22,8 @@ class SupplierServiceImpl implements SupplierService {
 
   @override
   Future<Supplier?> findById(int id) => _supplierRepository.findById(id);
+
+  @override
+  Future<List<SupplierBusiness>> findBusinessBySupplier(int supplierId) =>
+      _supplierRepository.findBusinessBySupplierId(supplierId);
 }

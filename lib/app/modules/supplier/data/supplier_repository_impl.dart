@@ -134,4 +134,23 @@ class SupplierRepositoryImpl implements SupplierRepository {
       await conn?.close();
     }
   }
+
+  @override
+  Future<bool> checkUserEmailExists(String email) async {
+    MySqlConnection? conn;
+
+    try {
+      conn = await _connection.openConnection();
+      var result = await conn
+          .query('SELECT count(*) FROM usuario WHERE email = ?', [email]);
+      var dataMysql = result.first;
+
+      return dataMysql[0] > 0;
+    } on MySqlException catch (e, s) {
+      _log.error('Erro ao verificar se email existe', e, s);
+      throw DatabaseException();
+    } finally {
+      await conn?.close();
+    }
+  }
 }

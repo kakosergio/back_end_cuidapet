@@ -23,5 +23,10 @@ Router _$SupplierControllerRouter(SupplierController service) {
     r'/<supplierId|[0-9]+>/business',
     service.findBusinessBySupplierId,
   );
+  router.add(
+    'GET',
+    r'/user',
+    service.checkUserExists,
+  );
   return router;
 }

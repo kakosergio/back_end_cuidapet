@@ -1,3 +1,4 @@
+import 'package:back_end_cuidapet/app/modules/supplier/view_models/create_supplier_user_view_model.dart';
 import 'package:back_end_cuidapet/entities/supplier.dart';
 import 'package:back_end_cuidapet/entities/supplier_business.dart';
 import 'package:injectable/injectable.dart';
@@ -30,4 +31,10 @@ class SupplierServiceImpl implements SupplierService {
   @override
   Future<bool> checkUserEmailExists(String email) =>
       _supplierRepository.checkUserEmailExists(email);
+
+  @override
+  Future<void> createSupplierUser(CreateSupplierUserViewModel model) {
+    // TODO: implement createSupplierUser
+    throw UnimplementedError();
+  }
 }

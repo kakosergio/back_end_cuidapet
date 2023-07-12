@@ -100,6 +100,11 @@ class SupplierController {
     return emailExists ? Response(200) : Response(204);
   }
 
+  @Route.post('/user')
+  Future<Response> createUser(Request request) async{
+     return Response.ok(jsonEncode(''));
+  }
+
   String _supplierMapper(Supplier supplier) => jsonEncode({
         'id': supplier.id,
         'name': supplier.name,

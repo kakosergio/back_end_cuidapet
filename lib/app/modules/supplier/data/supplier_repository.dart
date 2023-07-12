@@ -12,4 +12,6 @@ abstract interface class SupplierRepository {
   Future<List<SupplierBusiness>> findBusinessBySupplierId(int supplierId);
 
   Future<bool> checkUserEmailExists(String email);
+
+  Future<int> saveSupplier(Supplier supplier);
 }

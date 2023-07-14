@@ -16,7 +16,9 @@ class SecurityMiddleware extends Middlewares {
   final Logger log;
   final skipURL = <SecuritySkipUrl>[
     SecuritySkipUrl(url: '/auth/register', method: 'POST'),
-    SecuritySkipUrl(url: '/auth/', method: 'POST')
+    SecuritySkipUrl(url: '/auth/', method: 'POST'),
+    SecuritySkipUrl(url: '/suppliers/user', method: 'GET'),
+    SecuritySkipUrl(url: '/suppliers/user', method: 'POST'),
   ];
 
   SecurityMiddleware({

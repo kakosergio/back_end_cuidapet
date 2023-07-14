@@ -164,7 +164,7 @@ class SupplierRepositoryImpl implements SupplierRepository {
         '''
           INSERT 
             INTO fornecedor(nome, logo, endereco, telefone, latlng, categorias_fornecedor_id)
-            values (?,?,?,?,?,?)
+            values (?,?,?,?,ST_GeomFromText(?),?)
         ''',
         [
           supplier.name,
@@ -172,7 +172,7 @@ class SupplierRepositoryImpl implements SupplierRepository {
           supplier.address,
           supplier.phone,
           'POINT(${supplier.lat ?? 0} ${supplier.lng ?? 0})',
-          supplier.category
+          supplier.category?.id
         ],
       );
       return result.insertId!;

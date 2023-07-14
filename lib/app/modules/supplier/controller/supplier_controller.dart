@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:back_end_cuidapet/app/logger/logger.dart';
+import 'package:back_end_cuidapet/app/modules/supplier/view_models/create_supplier_user_view_model.dart';
 import 'package:back_end_cuidapet/entities/supplier.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shelf/shelf.dart';
@@ -101,8 +102,16 @@ class SupplierController {
   }
 
   @Route.post('/user')
-  Future<Response> createUser(Request request) async{
-     return Response.ok(jsonEncode(''));
+  Future<Response> createUser(Request request) async {
+    try {
+      final model = CreateSupplierUserViewModel(await request.readAsString());
+      await _supplierService.createSupplierUser(model);
+      return Response.ok(jsonEncode({}));
+    } catch (e, s) {
+      _log.error('Erro ao criar fornecedor e usuario', e, s);
+      return Response.internalServerError(
+          body: jsonEncode({'message': 'Erro ao criar fornecedor e usuario'}));
+    }
   }
 
   String _supplierMapper(Supplier supplier) => jsonEncode({
